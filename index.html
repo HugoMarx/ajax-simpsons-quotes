@@ -23,6 +23,11 @@
 			integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
 			crossorigin="anonymous"
 		/>
+		<link
+			rel="stylesheet"
+			href="./style.css"
+			
+		/>
 		<style></style>
 	</head>
 
@@ -31,8 +36,11 @@
 			<div class="container">
 				<h1 class="title">Simpson API</h1>
 
-				<div class="content" id="chuck-norris"></div>
+				<div class="content" id="simpson-quote"></div>
+				<button id='refresh-quote'>Another one !</button>
 			</div>
+
+			
 		</section>
 
 		<!-- We need to load axios first! -->
@@ -41,6 +49,34 @@
 			integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="
 			crossorigin="anonymous"
 		></script>
-		<script></script>
+		<script>
+			// This function loads pokemon data from the Pokemon API
+			function fetchSimpsonJSON() {
+				// Feel free to download this HTML and edit it, to use another Pokemon ID
+				const url = 'https://simpsons-quotes-api.herokuapp.com/quotes';
+				axios
+					.get(url)
+					.then(function (response) {
+						return response.data; // response.data instead of response.json() with fetch
+					})
+					.then(function (simpson) {
+						console.log('data decoded from JSON:', simpson);
+
+						// Build a block of HTML
+						const simpsonHtml = `
+	  <img src="${simpson[0].image}" />
+	  <p><strong>"${simpson[0].quote}"</strong></p>
+        <p><strong>- ${simpson[0].character}</strong></p>
+       
+      `;
+						document.querySelector('#simpson-quote').innerHTML = simpsonHtml;
+					});
+			}
+
+			fetchSimpsonJSON();
+
+			let refreshButton = document.getElementById('refresh-quote');
+			document.addEventListener('click', fetchSimpsonJSON);
+		</script>
 	</body>
 </html>
